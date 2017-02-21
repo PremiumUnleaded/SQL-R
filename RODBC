@@ -1,0 +1,14 @@
+Basic RODBC code for fetching data from a table associated with a ODBC
+
+code:
+#install.packages("RODBC")
+library("RODBC")
+
+#Name Source Tbl from DB
+sourcetbl <- "TableName"
+
+#Connect with ODBC
+db <- odbcConnect("ODBC-Name")
+
+#Pull Data from DB
+tbl <- sqlFetch(db,sourcetbl)
