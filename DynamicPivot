@@ -14,8 +14,8 @@ declare @DynCol as nvarchar(max)
 declare @SelectStmnt as nvarchar(max)
 
 set @DynCol = STUFF((SELECT distinct ',' + QUOTENAME(SalesPerson) 
-						From SalesData
-            *INSERT WHERE CLAUSE IF NEEDED*
+		From SalesData
+            	*INSERT WHERE CLAUSE IF NEEDED*
             FOR XML PATH(''), TYPE
             ).value('.', 'NVARCHAR(MAX)') 
         ,1,1,'')
