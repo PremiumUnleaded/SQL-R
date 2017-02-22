@@ -1,4 +1,7 @@
-# This script will pull from an ODBC and store the data as a CSV. It will then create an outlook email with your default send signature. The script will then paste a link to the file in the body of the email. You can choose to un comment the email for display and sending.
+# This script will pull from an ODBC and store the data as a CSV. 
+#It will then create an outlook email with your default send signature. 
+#The script will then paste a link to the file in the body of the email. 
+#You can choose to un comment the email for display and sending.
 
 
 #install.packages("RODBC")
@@ -45,7 +48,7 @@ outMail[["Recipients"]]$Add(recipients)
 outMail[["Subject"]] = subject
 outMail[["HTMLBody"]] = body_string_full
 
-outMail$Display()
+# outMail$Display()
 # outMail$Send()
 
 #Clear Dataset
