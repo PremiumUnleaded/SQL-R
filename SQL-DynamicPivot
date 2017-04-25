@@ -8,26 +8,27 @@ Use SelectStmnt to query the data you want to pivot!
 You could insert your results into a temp table for future queries.
 
 Code:
-use SalesDB
+	use SalesDB
+	GO
 
-declare @DynCol as nvarchar(max)
-declare @SelectStmnt as nvarchar(max)
+	declare @DynCol as nvarchar(max)
+	declare @SelectStmnt as nvarchar(max)
 
-set @DynCol = STUFF((SELECT distinct ',' + QUOTENAME(SalesPerson) 
+	set @DynCol = STUFF((SELECT distinct ',' + QUOTENAME(SalesPerson) 
+			From SalesData
+			*INSERT WHERE CLAUSE IF NEEDED*
+		    FOR XML PATH(''), TYPE
+		    ).value('.', 'NVARCHAR(MAX)') 
+		,1,1,'')
+
+	set @SelectStmnt = 'Select * From(
+		Select ClientID, SalesPerson, OrderSalesAMT
 		From SalesData
-            	*INSERT WHERE CLAUSE IF NEEDED*
-            FOR XML PATH(''), TYPE
-            ).value('.', 'NVARCHAR(MAX)') 
-        ,1,1,'')
+	)re
+	pivot
+	(
+	sum([OrderSalesAMT])
+	for SalesPerson in (' + @DynCol + ')
+	)piv'
 
-set @SelectStmnt = 'Select * From(
-	Select ClientID, SalesPerson, OrderSalesAMT
-	From SalesData
-)re
-pivot
-(
-sum([OrderSalesAMT])
-for SalesPerson in (' + @DynCol + ')
-)piv'
-
-exec sp_executesql @SelectStmnt
+	exec sp_executesql @SelectStmnt
